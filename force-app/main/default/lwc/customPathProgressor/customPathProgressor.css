@@ -1,0 +1,24 @@
+lightning-button.button {
+	--sds-c-button-destructive-color-background: #fdf145;
+    --sds-c-button-text-color: #05090c;
+}
+lightning-button.buttons {
+	--sds-c-button-success-color-background: #3b9449;
+    --sds-c-button-text-color: #05090c;
+}
+
+.pillSize{
+    width : 1000px;
+}
+
+
+lightning-radio-group .slds-radio_faux {
+    margin-right: 20px;
+}
+
+.slds-modal__content{
+    overflow: initial;
+}
+.redColor{
+    fill : #090303;
+}

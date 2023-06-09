@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Liability_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Liability Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Personal Loan</fullName>
+                <default>false</default>
+                <label>Personal Loan</label>
+            </value>
+            <value>
+                <fullName>Student Loan</fullName>
+                <default>false</default>
+                <label>Student Loan</label>
+            </value>
+            <value>
+                <fullName>Credit Card Debt</fullName>
+                <default>false</default>
+                <label>Credit Card Debt</label>
+            </value>
+            <value>
+                <fullName>Notes Payable</fullName>
+                <default>false</default>
+                <label>Notes Payable</label>
+            </value>
+            <value>
+                <fullName>Real Estate/Mortgage</fullName>
+                <default>false</default>
+                <label>Real Estate/Mortgage</label>
+            </value>
+            <value>
+                <fullName>Other Expenses</fullName>
+                <default>false</default>
+                <label>Other Expenses</label>
+            </value>
+            <value>
+                <fullName>Fed and State Tax</fullName>
+                <default>false</default>
+                <label>Fed and State Tax</label>
+            </value>
+            <value>
+                <fullName>HELOC</fullName>
+                <default>false</default>
+                <label>HELOC</label>
+            </value>
+            <value>
+                <fullName>Utility Payments</fullName>
+                <default>false</default>
+                <label>Utility Payments</label>
+            </value>
+            <value>
+                <fullName>Family Expenses</fullName>
+                <default>false</default>
+                <label>Family Expenses</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

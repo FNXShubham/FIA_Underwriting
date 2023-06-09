@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Credit</fullName>
+    <active>true</active>
+    <label>Credit</label>
+    <picklistValues>
+        <picklist>Stages__c</picklist>
+        <values>
+            <fullName>Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Asset Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bank Statement Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Collateral Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FICO Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Liabilities Review</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

@@ -1,0 +1,12 @@
+<template>
+    <lightning-card variant="Narrow"  title="Assets Summary" icon-name="standard:document">
+        <div class="slds-var-p-around_small">
+            <lightning-datatable
+                key-field="id"
+                data={dataList}
+                columns={columnsList}
+                hide-checkbox-column="true">
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,151 @@
+<template>
+    <div class="container">
+        <div style="width: 100%; background-color:#fff">
+            <div class="slds-scrollable slds-grid slds-grid_vertical-align-start" style="width: 100%; height:400px">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                    aria-labelledby="element-with-table-label other-element-with-table-label">
+                    <thead>
+                        <tr>
+                            <th data-label="Grouping" scope="row"
+                                style="border-bottom:1px solid #000; border-left:1px solid #000; border-right:1px solid #000; border-top:1px solid #000">
+                                <div class="slds-truncate subCatagory">
+                                    Grouping
+                                </div>
+                            </th>
+        
+                            <th data-label="catg" scope="row" style="border:0; border-top:1px solid #000;border-bottom:1px solid #000;">
+                                <template if:true={show}>
+                            <th data-label="Grouping" scope="row">
+                                <div class="slds-truncate subCatagory">
+                                    Category
+                                </div>
+                            </th>
+                            <th data-label="Grouping" scope="row"
+                                style="border:0; border-left:1px solid #000; border-right:1px solid #000;">
+                                <div class="slds-truncate subCatagory">
+                                    Sub Category
+                                </div>
+                            </th>
+        
+                            <template for:each={months} for:item="month">
+        
+                                <th key={month} data-label="Grouping" scope="row"
+                                    style="border:0; border-right:1px solid #000;">
+                                    <div class="slds-truncate amount" style="display:block; text-align:center">
+                                        <input type="checkbox" data-name={month} class="check" style="margin-right:6px"
+                                            onclick={handleCheckBoxChange} />
+                                        {month}
+                                    </div>
+                                </th>
+                            </template>
+                            </template>
+                            </th>
+        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={data} for:item="item" for:index="index">
+                            <tr class="slds-hint-parent textBold gt" key={item}>
+                                <th data-label="Grouping" scope="row"
+                                    style="border-left:1px solid #000;border-bottom:1px solid #000">
+                                    <div class="slds-truncate catagory">
+                                        {item.grouping}
+                                    </div>
+                                </th>
+                                <td data-label="Category"
+                                    style="border:0; border-left:1px solid #000; border-bottom:1px solid #000">
+                                    <template for:each={item.category} for:item="categoryItem">
+                            <tr class="slds-hint-parent textBold" key={categoryItem}>
+                                <td>
+                                    <div class="slds-truncate subCatagory">{categoryItem.name}</div>
+                                </td>
+                                <td>
+                                    <template for:each={categoryItem.subCategory} for:item="subCategoryItem">
+                            <tr key={subCategoryItem} class="slds-hint-parent noBorder">
+                                <td>
+                                    <div class="slds-truncate subCatagory">{subCategoryItem.name}</div>
+                                </td>
+        
+                                <template for:each={subCategoryItem.value} for:item="subCategoryValue" for:index="index">
+                                    <td data-label="Sub Categroy" key={subCategoryValue}>
+                                        <div class="slds-truncate amount">
+                                            <p>$</p>
+                                            <p data-name={index}>{subCategoryValue}</p>
+                                        </div>
+                                    </td>
+                                </template>
+                            </tr>
+                        </template>
+                        </td>
+                        </tr>
+        
+                        </template>
+                        </td>
+                        </tr>
+                        <!-- <tr class="slds-hint-parent" key={item}>
+                    <td></td>
+                    <th data-label="Grouping" scope="row" style="border-left:1px solid #000;border-bottom:1px solid #000">
+                        <div class="slds-truncate subCatagory">
+                            {item.grouping} Total
+                        </div>
+                    </th>
+                    <td></td>
+                    <td></td>
+                </tr> -->
+                        </template>
+                    </tbody>
+                </table>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                    aria-labelledby="element-with-table-label other-element-with-table-label">
+                    <thead>
+                        <tr>
+                            <th data-label="Grouping" scope="row" style="border:0; border-top:1px solid #000;border-bottom:0">
+                                <div class="slds-truncate amount" style="display:block; text-align:center">
+                                    Grand Total
+                                </div>
+                            </th>
+                            <th data-label="Grouping" scope="row"
+                                style="border-bottom:0; border-left:1px solid #000; border-right:1px solid #000;border-top:1px solid #000">
+                                <div class="slds-truncate amount" style="display:block; text-align:center">
+                                    Average
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr style="vertical-align: top;">
+                            <td>
+                                <template for:each={grandTotal} for:item="total" for:index="index">
+                        <tr key={total}  class="total">
+                            <td>
+                                <div class="slds-truncate amount" style="font-weight:bold;">
+                                    <p if:true={showDollar}>$</p>
+                                    <p>{total}</p>
+                                </div>
+                            </td>
+                        </tr>
+                        </template>
+                        </td>
+                        <td>
+                            <template for:each={average} for:item="avg" for:index="index">
+                                <tr key={total} >
+                                    <td style="border-right: 1px solid #000;">
+                                        <div class="slds-truncate amount" style="font-weight:bold;">
+                                            <p if:true={showDollar}>$</p>
+                                            <p>{avg}</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </td>
+                        </tr>
+        
+                    </tbody>
+                </table>
+            </div>
+        
+        </div>
+    </div>
+    
+</template>

@@ -1,0 +1,188 @@
+<template>
+    <div class="alignright">
+        <lightning-button-icon icon-name="utility:filterList"  alternative-text="Filter" title="Filter" onclick={showFilter}></lightning-button-icon>
+    </div>
+    <br>
+    <template if:true={filter}>
+        <div class="slds-box slds-theme_default"><!--slds-card__body slds-card__body_inner -->
+            <div class="slds-path">
+                <div class="slds-grid slds-path__action">
+                    <div class="slds-float_left">        
+                        <lightning-input type="search" onblur={handleKeyChange} class="slds-m-bottom_small" label="Transaction Name:" maxlength="70">  
+                        </lightning-input>
+                    </div>
+                    <div>
+                        Category:
+                        <br>
+                    <template for:each={categoryList} for:item="item">
+                        <lightning-input key={item} type="checkbox" class="slds-m-bottom_small" label={item} maxlength="70" onchange={handleSelection}>  
+                        </lightning-input>
+                    </template>
+                    </div>
+                    
+                    <div>
+                        Sub Category:
+                        <br>
+                    <template for:each={subcategorylist} for:item="item">
+                        <lightning-input key={item} type="checkbox" class="slds-m-bottom_small" label={item} maxlength="70" onchange={handleSubCatSelection}>  
+                        </lightning-input>
+                    
+                </template>
+                    </div>
+                    <div>
+                        <lightning-input type="date" name="input1" label="Transaction Start Date" onchange={handleStDateCahngeEvent}></lightning-input>
+                    </div>
+                    <div>
+                        <lightning-input type="date" name="input1" label="Transaction End Date" onchange={handleEndDateCahngeEvent}></lightning-input>
+                    </div>  
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="alignright">
+            <lightning-button label="Apply" variant="brand" class="slds-m-right_medium" onclick={applyFilter}>
+            </lightning-button>
+        </div>
+</template>
+    <br>
+    <div class="container">
+        <lightning-tabset class="slds-p-vertical_large">
+            <template for:each={banks} for:item='bank'>
+            <lightning-tab data-name={bank.Id} key={bank.Id} label={bank.Bank_Account_Name__c} onactive={handleActive}>
+                <lightning-layout-item>
+    <div class="slds-box slds-theme–default">
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                <thead>
+                <tr>
+                    <th class="" scope="col">
+                        Transaction Date
+                    </th>
+                    <th class="" scope="col">
+                        Grouping
+                    </th>
+                    <th class="" scope="col">
+                        Category
+                    </th>
+                    <th class="" scope="col">
+                        Sub Category
+                    </th>
+                    <th class="" scope="col">
+                        Transaction Name
+                    </th>
+                    <th class="" scope="col" style="text-align: right">
+                        Amount
+                    </th>
+                    <th class="" scope="col" style="text-align: center">
+                        Include in Business Debit/Deposit
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                    <template for:each={datalist} for:item="item">
+                        <tr key={item}>
+                            <th scope="col">
+                                {item.key}
+                            </th>
+                            <th scope="col">
+                                {item.grp}
+                            </th>
+                            <th scope="col">
+                                {item.type}
+                            </th>
+                            <th scope="col">
+                               
+                            </th>
+                            <th scope="col">
+                               
+                            </th>
+                            <th scope="col">
+                               
+                            </th>
+                            <th scope="col">
+                               
+                            </th>
+                        </tr>
+                
+                        <template for:each={item.value} for:item="child">
+                            <tr key={item}>
+                                <th scope="col">
+                                    
+                                </th>
+                                <th scope="col">
+                                    
+                                </th>
+                                <th scope="col">
+                                    
+                                </th>
+                                <th scope="col">
+                                    {child.Sub_Category__c}
+                                </th>
+                                <th scope="col" style="text-align: left">
+                                    {child.Transaction_Name__c}
+                                </th>
+                                <th scope="col" style="text-align: right">
+                                    <lightning-formatted-number value={child.Input_Amount__c} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </th>
+                                <th scope="col" style="text-align: center">
+                                    <input type="checkbox" checked={child.Include_in_Business_Debits_Deposits__c} onchange={handleRowAction}/>
+                                </th>
+                            </tr>
+                        </template>
+                    </template>
+                <!-- <template iterator:it={datalist}>
+                    <tr class="slds-hint-parent" key = {it.value.Id}>
+                        <td>{it.value.Transaction_Date__c}</td>
+                        <td>{it.value.Category__c}</td>
+                        <td style="text-align: center">{it.value.Sub_Category__c}</td>
+                        <td>${it.value.Input_Amount__c}</td>
+                        <td>{it.value.Include_in_Business_Debits_Deposits__c}</td>
+                    </tr>
+                </template> -->
+            </tbody>
+            <!-- <tfoot>
+                <tr>
+                    <th id="tot" colspan="3"></th>
+                  <td style="text-align: right"></td>
+                </tr>
+                <tr>
+                    <th id="tot1" colspan="3"></th>
+                  <td style="text-align: right"></td>
+                </tr>
+                <tr>
+                  <th id="total" colspan="4" ><b>Total Monthly Business Debit:</b></th>
+                  <td style="text-align: right"><b><lightning-formatted-number value={totalmonthlybusinessdebit} format-style="currency" currency-code="USD"></lightning-formatted-number></b></td>
+                </tr>
+                <tr>
+                    <th id="total2" colspan="4" ><b>Total Monthly Business Deposits:</b></th>
+                    <td style="text-align: right"><b>${totalmonthlybusinessdeposit}</b></td>
+                  </tr>
+                  <tr>
+                    <th id="tot2" colspan=""></th>
+                  <td></td>
+                </tr>
+                <tr>
+                    <th id="tot3" colspan=""></th>
+                  <td></td>
+                </tr>
+                  <tr>
+                    <th id="total3" colspan="4" ><b>Total Monthly Non-Business Debits:</b></th>
+                    <td style="text-align: right"><b>${totalmonthlynonbusinessdebit}</b></td>
+                  </tr>
+                  <tr>
+                    <th id="total4" colspan="4" ><b>Total Monthly Non-Buisness Deposits:</b></th>
+                    <td style="text-align: right"><b>${totalmonthlynonbusinessdeposit}</b></td>
+                  </tr>
+               </tfoot> -->
+        </table>
+    </div>
+    </lightning-layout-item>
+    </lightning-tab>
+    </template>
+    </lightning-tabset>
+    </div>
+    <br>
+    <div class="alignright">
+        <lightning-button label="Save" variant="brand" class="slds-m-right_medium">
+        </lightning-button>
+    </div>  
+</template>
