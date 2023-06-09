@@ -1,0 +1,629 @@
+<template>
+  <div if:true={loader} class="loader slds-is-absolute">
+      <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+  </div>
+  <lightning-tabset class="slds-box">
+      <!-- <lightning-tab label="Account Overview" onactive={getOverview}>
+          <div class="slds-box slds-theme_default">
+              <div class="slds-col slds-box slds-theme_default">
+                  <span>Overview</span>
+              </div>
+              <div class="slds-col slds-box slds-theme_default">
+                  <div class="slds-box opf slds-box slds-theme_default">
+                      <div class="slds-grid slds-gutters slds-box slds-theme_default">
+                          <div class="slds-col slds-size_2-of-3">
+                              <span>Beginning Balance($):</span>
+                          </div>
+                          <div class="slds-col slds-size_1-of-3">
+                              <span> {avgBeginingBalance}</span>
+                          </div>
+                      </div>
+                      <br>
+                      <div class="slds-grid slds-gutters">
+                          <div class="slds-col slds-size_2-of-3">
+                              <span>Deposits(#):</span>
+                          </div>
+                          <div class="slds-col slds-size_1-of-3">
+                              <span> {avgDeposBal}</span>
+                          </div>
+                      </div>
+                      <br>
+                      <div class="slds-grid slds-gutters">
+                          <div class="slds-col slds-size_2-of-3">
+                              <span>Revenue Deposits($):</span>
+                          </div>
+                          <div class="slds-col slds-size_1-of-3">
+                              <span> {avgRevenueBal}</span>
+                          </div>
+                      </div>
+                      <br>
+                      <div class="slds-grid slds-gutters">
+                          <div class="slds-col slds-size_2-of-3">
+                              <span>Other Deposits($):</span>
+                          </div>
+                          <div class="slds-col slds-size_1-of-3">
+                              <span> {avgOtherBal}</span>
+                          </div>
+                      </div>
+                      <br>
+                      <div class="slds-grid slds-gutters">
+                          <div class="slds-col slds-size_2-of-3">
+                              <span>Withdrawals($):</span>
+                          </div>
+                          <div class="slds-col slds-size_1-of-3">
+                              <span> {avgWithDrawlBal}</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="slds-col">
+              </div>
+              <div class="slds-col">
+                  <span></span>
+              </div>
+          </div>
+      </lightning-tab> -->
+      <template key={bank.Id} for:each={banks} for:item='bank'>
+          <lightning-tab data-name={bank.Id} key={bank.Id} label={bank.Bank_Account_Name__c}
+              onactive={handleActive}>
+              <div class="slds-grid slds-grid_pull-padded-medium slds-theme_default">
+                  <div class="slds-col slds-p-horizontal_medium slds-theme_default">
+                      <h1 class="slds-p-around_small slds-theme_default">{TableTitle}</h1>
+                  </div>
+                  <!-- <div class="slds-col slds-p-horizontal_medium type">
+                      <h1 class="slds-p-around_small" align="center">Scroll right to view more Statements</h1>
+                  </div>
+                  <div class="slds-col slds-p-horizontal_medium type">
+                      <h1 class="slds-p-around_small" align="right">{AccountType}</h1>
+                  </div> -->
+              </div>
+              <lightning-layout multiple-rows>
+                  <lightning-layout-item size="2">
+                      <table class="slds-table slds-table_cell-buffer daysmonth slds-theme_default"
+                          aria-labelledby="element-with-table-label other-element-with-table-label"
+                          style="width: 20px; border-right: 0%;">
+                          <thead>
+                              <tr class="slds-line-height_reset">
+
+                                  <th>
+                                      <div class="slds-truncate" title="Average">Day/Months </div>
+                                  </th>
+
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr class="slds-hint-parent">
+
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">Include in Calculation
+                                      </div>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td><br></td>
+                              </tr>
+
+                              <template for:each={mapDataRevenueDeposits} for:item="mapkey2" for:index="indexdeprev">
+
+
+                                  <tr class="slds-hint-parent" key={mapkey2.key}>
+
+                                      <td class="direction" scope="col">
+                                          <div class="slds-truncate showdata" title="Cloudhub">{mapkey2.key}</div>
+                                      </td>
+
+                                  </tr>
+                              </template>
+                              <tr>
+                                  <td><br></td>
+                              </tr>
+                              <template for:each={mapDataBeginingDeposits} for:item="mapkey0" for:index="indexbeg">
+
+
+                                  <tr class="slds-hint-parent" key={mapkey0.key}>
+
+                                      <td scope="col">
+                                          <div class="slds-truncate showdata" title="Cloudhub"> {mapkey0.key}</div>
+                                      </td>
+
+                                  </tr>
+                              </template>
+                              <tr>
+                                  <td><br></td>
+                              </tr>
+
+                              <template for:each={mapDataNegetiveDeposits} for:item="mapkey4"
+                                  for:index="indexdeprevwithrawneg">
+
+
+                                  <tr class="slds-hint-parent" key={mapkey4.key}>
+
+                                      <td scope="col">
+                                          <div class="slds-truncate showdata" title="Cloudhub">{mapkey4.key}</div>
+                                      </td>
+
+                                  </tr>
+                              </template>
+                              <tr>
+                                  <td><br></td>
+                              </tr>
+                              <template for:each={mapDataAvgDaysDeposits} for:item="mapkey5"
+                                  for:index="indexdeprevwithrawneg">
+
+
+                                  <tr class="slds-hint-parent" key={mapkey5.key}>
+
+                                      <td scope="col">
+                                          <div class="slds-truncate showdata" title="Cloudhub"> {mapkey5.key}</div>
+                                      </td>
+
+                                  </tr>
+                              </template>
+                              <tr>
+                                  <td><br></td>
+                              </tr>
+                              <template for:each={mapDataDaysDeposits} for:item="mapkey6"
+                                  for:index="indexdeprvwithrawneg">
+
+
+                                  <tr class="slds-hint-parent" key={mapkey6.key}>
+
+                                      <td scope="col">
+                                          <div class="slds-truncate showdata" title="Cloudhub"> {mapkey6.key}</div>
+                                      </td>
+
+                                  </tr>
+                              </template>
+
+
+                          </tbody>
+
+
+                      </table>
+                  </lightning-layout-item>
+
+                  <lightning-layout-item size={columnCount}>
+
+                      <div class="slds-table--header-fixed_container" style="width: 100%; background-color:#fff">
+                          <div class="slds-scrollable_x" style="width: 100%;">
+                              <table class="slds-table">
+                                  <thead>
+                                      <tr class="slds-text-title_caps">
+
+                                          <th for:each={columns} for:item="column" key={column.label}>
+                                              <div class="slds-truncate" title={column.label}>{column.label}</div>
+                                          </th>
+
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+
+                                      <tr class="slds-hint-parent">
+
+                                          <template for:each={checkBoxCount} for:item="Box" for:index="indexst">
+                                              <td key={checkBoxCount.label}>
+                                                  <lightning-input type="checkbox" checked={Box.value}
+                                                      class="checkboxInput" data-name={Box.recId}
+                                                      data-id={bank.Bank_Account_Name__c}
+                                                      data-index={indexst} onchange={getChkBox2}></lightning-input>
+                                              </td>
+                                          </template>
+                                      </tr>
+                                      <tr>
+                                          <td><br></td>
+                                      </tr>
+                                      <template for:each={mapDataRevenueDeposits} for:item="mapkey2"
+                                          for:index="indexdeprev">
+                                          <tr class="slds-hint-parent" key={mapkey2.key}>
+
+                                              <td class="direction" scope="col" for:each={mapkey2.value}
+                                                  for:item="mapval2" for:index="index12" key={mapval2.indexdeprev}>
+                                                  <lightning-formatted-text class="slds-show showdata"
+                                                      data-id={mapval2.idVal} value={mapval2.value}
+                                                      ondblclick={inpClickHandler}></lightning-formatted-text>
+                                                  <input class="slds-hide" data-id={mapval2.idVal2}
+                                                      value={mapval2.value} onchange={handleClick}></input>
+                                              </td>
+
+                                          </tr>
+                                      </template>
+                                      <tr>
+                                          <td><br></td>
+                                      </tr>
+                                      <template for:each={mapDataBeginingDeposits} for:item="mapkey0"
+                                          for:index="indexbegining">
+                                          <tr class="slds-hint-parent" key={mapkey0.key}>
+
+                                              <td class="direction" scope="col" for:each={mapkey0.value}
+                                                  for:item="mapval0" for:index="index1" key={mapval0.indexbegining}>
+                                                  <lightning-formatted-text class="slds-show showdata"
+                                                      data-id={mapval0.idVal} value={mapval0.value}
+                                                      ondblclick={inpClickHandler}></lightning-formatted-text>
+                                                  <input class="slds-hide" data-id={mapval0.idVal2}
+                                                      value={mapval0.value} onchange={handleClick}></input>
+                                              </td>
+
+                                          </tr>
+                                      </template>
+                                      <tr>
+                                          <td><br></td>
+                                      </tr>
+
+                                      <template for:each={mapDataNegetiveDeposits} for:item="mapkey4"
+                                          for:index="indexdeprevwithrawneg">
+                                          <tr class="slds-hint-parent" key={mapkey4.key}>
+
+                                              <td class="direction" scope="col" for:each={mapkey4.value}
+                                                  for:item="mapval4" for:index="index14"
+                                                  key={mapval4.indexdeprevwithrawneg}>
+                                                  <lightning-formatted-text class="slds-show showdata"
+                                                      data-id={mapval4.idVal} value={mapval4.value}
+                                                      ondblclick={inpClickHandler}></lightning-formatted-text>
+                                                  <input class="slds-hide" data-id={mapval4.idVal2}
+                                                      value={mapval4.value} onchange={handleClick}></input>
+                                              </td>
+
+                                          </tr>
+                                      </template>
+                                      <tr>
+                                          <td><br></td>
+                                      </tr>
+                                      <template for:each={mapDataAvgDaysDeposits} for:item="mapkey5"
+                                          for:index="indexdeprevwithrawneg1">
+                                          <tr class="slds-hint-parent" key={mapkey5.key}>
+
+                                              <td class="direction" scope="col" for:each={mapkey5.value}
+                                                  for:item="mapval5" for:index="index15"
+                                                  key={mapval5.indexdeprevwithrawneg1}>
+                                                  <lightning-formatted-text class="slds-show showdata"
+                                                      data-id={mapval5.idVal} value={mapval5.value}
+                                                      ondblclick={inpClickHandler}></lightning-formatted-text>
+                                                  <input class="slds-hide" data-id={mapval5.idVal2}
+                                                      value={mapval5.value} onchange={handleClick}></input>
+
+                                              </td>
+
+                                          </tr>
+                                      </template>
+                                      <tr>
+                                          <td><br></td>
+                                      </tr>
+                                      <template for:each={mapDataDaysDeposits} for:item="mapkey6"
+                                          for:index="indexdeprvwithrawneg2">
+                                          <tr class="slds-hint-parent" key={mapkey6.key}>
+
+                                              <td class="direction" scope="col" for:each={mapkey6.value}
+                                                  for:item="mapval6" for:index="index16"
+                                                  key={mapval6.indexdeprvwithrawneg2}>
+                                                  <lightning-formatted-text class="slds-show showdata"
+                                                      data-id={mapval6.idVal} value={mapval6.value}
+                                                      ondblclick={inpClickHandler}></lightning-formatted-text>
+                                                  <input class="slds-hide" data-id={mapval6.idVal2}
+                                                      value={mapval6.value} onchange={handleClick}></input>
+                                              </td>
+
+                                          </tr>
+                                      </template>
+                                  </tbody>
+
+                              </table>
+                          </div>
+                      </div>
+                  </lightning-layout-item>
+                  <lightning-layout-item size="1">
+                      <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                          aria-labelledby="element-with-table-label other-element-with-table-label"
+                          style="width: 8%; padding-left: 5px;">
+                          <thead>
+                              <tr class="slds-line-height_reset" style="padding-left: 5px;">
+
+                                  <th>
+                                      <div class="slds-truncate" title="Average">Average</div>
+                                  </th>
+
+                              </tr>
+                          </thead>
+                          <tbody>
+
+                              <tr class="slds-hint-parent">
+                                  <td>
+                                      <div class="slds-truncate" title="Cloudhub"> <br>
+                                      </div>
+                                  </td>
+
+                              </tr>
+                              <tr class="slds-hint-parent">
+                                  <td>
+                                      <div class="slds-truncate" title="Cloudhub"> <br>
+                                      </div>
+                                  </td>
+
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDeposits}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgRevDeposit}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgOtherDeposit}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgWithdraw}</div>
+
+                                  </td>
+                                </tr>
+                              <tr class="slds-hint-parent">
+                                  <td>
+                                      <div class="slds-truncate" title="Cloudhub"> <br>
+                                      </div>
+                                  </td>
+
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{beginingBalances}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{endingBalances}</div>
+
+                                  </td>
+                              </tr>
+                              <tr class="slds-hint-parent">
+                                  <td>
+                                      <div class="slds-truncate" title="Cloudhub"> <br>
+                                      </div>
+                                  </td>
+
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{negativeDays}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{nsfDays}</div>
+
+                                  </td>
+                              </tr>
+                              <tr class="slds-hint-parent">
+                                  <td>
+                                      <div class="slds-truncate" title="Cloudhub"> <br>
+                                      </div>
+                                  </td>
+
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDayDeposits}</div>
+
+                                  </td>
+                              </tr>
+
+                              <tr class="slds-hint-parent">
+                                  <td>
+                                      <div class="slds-truncate" title="Cloudhub"> <br>
+                                      </div>
+                                  </td>
+
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays1}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays2}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays3}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays4}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays5}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays6}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays7}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays8}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays9}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays10}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays11}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays12}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays13}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays14}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays15}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays16}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays17}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays18}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays19}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays20}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays21}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays22}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays23}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays24}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays25}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays26}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays27}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays28}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays29}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays30}</div>
+
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div class="slds-truncate showdata" title="Cloudhub">{avgDays31}</div>
+
+                                  </td>
+                              </tr>
+                          </tbody>
+
+
+                      </table>
+                  </lightning-layout-item>
+              </lightning-layout>
+          </lightning-tab>
+      </template>
+
+      <div if:true={showBtns}
+          style="background: #E4E4E4; width: 100%; position: fixed; bottom: 0px; display: flex; justify-content: center; padding: 5px">
+          <lightning-button style="margin-right: 50px" variant="brand" label="Save" title="Save"
+              onclick={handleBtnSave}></lightning-button>
+          <lightning-button variant="neutral" label="Cancel" title="Cancel"
+              onclick={handleBtnCancel}></lightning-button>
+      </div>
+  </lightning-tabset>
+
+</template>

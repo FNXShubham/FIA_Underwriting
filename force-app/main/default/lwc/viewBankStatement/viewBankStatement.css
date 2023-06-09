@@ -1,0 +1,68 @@
+.hideFirstColTable table th:first-child,
+.hideFirstColTable table td:first-child {
+    display: none !important;
+}
+
+.opf {
+    max-width: 600px;
+
+}
+
+.type h1 {
+
+    padding-right: 10px;
+}
+
+.slds-table_cell-buffer tr>th:first-child,
+.slds-table_cell-buffer tr>td:first-child,
+.slds-table--cell-buffer tr>th:first-child,
+.slds-table--cell-buffer tr>td:first-child {
+    padding-left: 0px;
+}
+
+.slds-scrollable_x {
+    overflow-x: scroll;
+}
+
+.slds-table_header-fixed_container,
+.slds-table--header-fixed_container {
+    padding-top: 0rem;
+
+}
+
+.slds-table_bordered tbody td,
+.slds-table_bordered tbody th,
+.slds-table--bordered tbody td,
+.slds-table--bordered tbody th {
+    border-top: 0px;
+}
+
+.daysmonth {
+    border-right: 0px;
+}
+
+.slds-scrollable_x {
+    direction: rtl;
+    overflow-x: scroll;
+}
+
+.direction {
+    direction: ltr !important;
+}
+
+input {
+    width: 100px;
+}
+
+.showdata,
+td {
+    height: 20px;
+}
+
+.loader {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    align-items: start;
+}

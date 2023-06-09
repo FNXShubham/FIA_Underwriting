@@ -1,0 +1,11 @@
+tbody,thead {
+    box-shadow: 0 0 0 1px black;
+    border-radius: 5px;
+  }
+  .alignright{
+    display:flex;
+    justify-content: flex-end;
+  }
+  table,th{
+    border: 1px solid;
+  }

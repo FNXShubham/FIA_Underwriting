@@ -1,0 +1,146 @@
+<template>
+    <template if:true={isApproved}>
+        <div class="slds-box slds-theme_default"><!--slds-card__body slds-card__body_inner -->
+            <div class="slds-path">
+                <div class="slds-grid slds-path__action">
+                    <lightning-layout-item size="4" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                            <h1><b>Add Stipulations:</b></h1>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="4" flexibility="auto" padding="horizontal-small" class="slds-text-align_right">
+                            <lightning-button label="     Create New Stipulation    " variant="destructive" onclick={showModalBox} class="slds-m-left_x-medium">
+                        </lightning-button>
+                    </lightning-layout-item>
+                </div>
+            </div>
+        </div>
+    </template>
+    <!-- modal start -->      
+   <template if:true={isShowModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+            <!-- modal header start -->
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                </header>
+            <lightning-card title="Underwriting Stipulations" icon-name="standard:account">
+                <div class="slds-var-p-around_x-small" >
+                    <lightning-record-edit-form object-api-name="Stipulations__c" id="createContactForm2" >
+                        <lightning-input-field field-name="Application__c" label="Application" value={applicationId} onchange={handelAppchange}> </lightning-input-field>
+                    </lightning-record-edit-form>
+                    <lightning-record-edit-form object-api-name="Stipulations__c" id="createAppUnderForm" >
+                        <lightning-input-field field-name="Application_Underwriting__c" label="Application Underwriting" value={recordId} onchange={handleAppUnderSelection}> </lightning-input-field>
+                    </lightning-record-edit-form>
+                    <lightning-record-view-form
+                    record-id={recordId}
+                    object-api-name="Application_Underwriting__c"
+                >
+                        <lightning-output-field field-name="Module__c"> </lightning-output-field>
+                        <lightning-output-field field-name="Stages__c"> </lightning-output-field>
+                    
+                </lightning-record-view-form>
+                    <!--Custom Search Start-->
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="combobox-id-1" id="combobox-label-id-33">Stipulation Name</label>
+                        <div class="slds-form-element__control">
+                            <div class="slds-combobox_container">
+                                <div id="box" class={boxClass} aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                                    <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                                        <template if:true={isValueSelected}>
+                                            <div id="lookup-pill" class="slds-pill-container">
+                                                <lightning-pill class="pillSize" label={selectedName} name={selectedName} onremove={handleRemovePill} href={href}>
+                                                    <lightning-icon icon-name="standard:event" alternative-text="Event" ></lightning-icon>
+                                                </lightning-pill>
+                                            </div>
+                                        </template>
+                                        <template if:false={isValueSelected}>
+                                            <div class="slds-p-top_none">
+                                                <lightning-input label="Stipulation Name" class={inputClass} type="search" id="input" value={searchTerm}
+                                                                onclick={handleClick} onblur={onBlur} onchange={onChange}
+                                                                variant="label-hidden" autocomplete="off" placeholder={searchPlaceholder}>
+                                                </lightning-input>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div id="listbox-id-1" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid" role="listbox">
+                                        <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                            <template for:each={records} for:item="record">
+                                                <li key={record.Id} onclick={onSelect} data-id={record.Id} role="presentation" data-name={record.Name}>
+                                                    <span class="slds-lookup__item-action slds-lookup__item-action--label" role="option">
+                                                        <lightning-icon class="slds-icon slds-icon--small slds-icon-text-default" icon-name="standard:event" alternative-text="Event" size="small"></lightning-icon>
+                                                        <span class="slds-truncate">{record.Name}</span>
+                                                    </span>
+                                                </li>
+                                            </template>
+                                            <li onclick={createStipulations}>
+                                                <span class="slds-lookup__item-action slds-lookup__item-action--label" role="option">
+                                                    <lightning-icon class="slds-icon slds-icon--small slds-icon-text-default" icon-name="utility:add" alternative-text="Add" size="small"></lightning-icon>
+                                                    <span class="slds-truncate">Create New Stipulation</span>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Custom Search End-->
+                    <lightning-record-edit-form object-api-name="Stipulations__c">
+                        <lightning-input-field field-name="Stipulation_Type__c" label="Stipulation Type" onchange={handleStipTypeSelection}>
+                        </lightning-input-field>
+                    </lightning-record-edit-form>
+                    <!-- <lightning-input value={recStipulations.Status__c} label="Status" onchange={handelRatingchange}></lightning-input> -->
+                        <lightning-record-edit-form object-api-name="Stipulations__c" id="createCommentForm" >
+                            <lightning-textarea field-name="Comments__c" label="Comment" onchange={handleCommentSelection}> </lightning-textarea>
+                        </lightning-record-edit-form>
+
+                    <br/>
+                    <lightning-button label="Save" onclick={createStipRec} variant="brand"></lightning-button>
+                    
+                </div>
+            </lightning-card>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+<!-- modal end -->
+<template if:true={createstip}>
+	<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+		<div class="slds-modal__container">
+			<header class="slds-modal__header">
+				<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeDetails}>
+					<lightning-icon icon-name="utility:close"
+									alternative-text="close"
+									variant="inverse"
+									size="small" ></lightning-icon>
+						<span class="slds-assistive-text">Close</span>
+				</button>
+			</header>
+			<lightning-card title="Underwriting Stipulations" icon-name="standard:account">
+				<div class="slds-var-p-around_x-small" >
+                    <lightning-record-view-form record-id={recordId} object-api-name="Application_Underwriting__c">
+                        <lightning-output-field field-name="Module__c"> </lightning-output-field>
+                        <lightning-output-field field-name="Stages__c"> </lightning-output-field>
+                    </lightning-record-view-form>
+                    <lightning-record-edit-form object-api-name="Stipulations_Definition__c" id="createStipDefForm" >
+                        <lightning-input-field field-name="Name" label="Stipulation Name" onchange={handleStipDefName}> </lightning-input-field>
+                    </lightning-record-edit-form>
+					<!--<lightning-record-form  object-api-name="Stipulations_Definition__c" layout-type="Full" columns="2" mode="edit" onsubmit={closeDetails}>
+					</lightning-record-form>-->
+                    <br/>
+                    <lightning-button label="Save" onclick={createStipDefRec} variant="brand"></lightning-button>
+				</div>
+			</lightning-card>
+		</div>
+	</section>
+	<div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+	<template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" variant="inverse"></lightning-spinner>
+    </template>
+</template>
