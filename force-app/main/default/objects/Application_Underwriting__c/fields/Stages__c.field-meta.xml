@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Stages__c</fullName>
+    <externalId>false</externalId>
+    <label>Stages</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>In Review</fullName>
+                <default>true</default>
+                <label>In Review</label>
+            </value>
+            <value>
+                <fullName>KYC Review</fullName>
+                <default>false</default>
+                <label>KYC Review</label>
+            </value>
+            <value>
+                <fullName>Borrower Entity Review</fullName>
+                <default>false</default>
+                <label>Borrower Entity Review</label>
+            </value>
+            <value>
+                <fullName>Loan Docs Review</fullName>
+                <default>false</default>
+                <label>Loan Docs Review</label>
+            </value>
+            <value>
+                <fullName>Funding Docs Review</fullName>
+                <default>false</default>
+                <label>Funding Docs Review</label>
+            </value>
+            <value>
+                <fullName>Bank Statement Review</fullName>
+                <default>false</default>
+                <label>Bank Statement Review</label>
+            </value>
+            <value>
+                <fullName>FICO Review</fullName>
+                <default>false</default>
+                <label>FICO Review</label>
+            </value>
+            <value>
+                <fullName>Asset Review</fullName>
+                <default>false</default>
+                <label>Asset Review</label>
+            </value>
+            <value>
+                <fullName>Liabilities Review</fullName>
+                <default>false</default>
+                <label>Liabilities Review</label>
+            </value>
+            <value>
+                <fullName>Collateral Review</fullName>
+                <default>false</default>
+                <label>Collateral Review</label>
+            </value>
+            <value>
+                <fullName>Approved</fullName>
+                <default>false</default>
+                <label>Approved</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
